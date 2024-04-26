@@ -1,0 +1,8 @@
+What word contains all of the twenty-six letters?;alphabet
+Which word in the dictionary is spelled incorrectly?;incorrectly
+What disappears the moment you say its name?;silence
+What is always in front of you but can’t be seen?;the future
+What goes up but never comes down?;age
+The more of this there is, the less you see. What is it?;darkness
+What has keys but can’t open locks?;piano
+
