@@ -1,255 +1,337 @@
 """
 
 Author:         Silvana Cardenas Rico
-Date:           April 23, 2024
+Date:           April 30, 2024
 Assignment:     Project 2
 Course:         CPSC1051
-Lab Section:    01
+Lab Section:    Section 01
+
+CODE DESCRIPTION: The user will be kidnapped by jigsaw, they will wake up in a unfamiliar house. This program will make the user follow jigsaw's game with 
+randomized riddle question from the file_name.txt. The user will have 5 tries on each riddle question found in each room. Once the user solves each riddle 
+question without using all the tries they will be free to go, however if the user uses up all their tries in one riddle they will be killed by jigsaw. The
+user will have two outcomes, to come out alive or be trapped in the house forever.
 
 """
-#palmetto cluster
-
-#________________________________________________________________________________________________________
-# import random
-# # Open the file in read mode
-# with open('file_name.txt', 'r') as file:
-#     # Iterate over each line in the file
-#     for line in file:
-#         # Split the line by the semicolon
-#         question, answer = line.strip().split(';')
-        
-#         # Print the question and answer
-#         print("Question:", question)
-#         print("Answer:", answer)
-#         print() # Add an empty line for better readability
-
-
-
-
-# import random
-
-# # Open the file in read mode
-# with open('file_name.txt', 'r') as file:
-#     # Read all lines from the file
-#     lines = file.readlines()
-
-# # Shuffle the lines randomly
-# random.shuffle(lines)
-
-# # Iterate over each line and print a random question-answer pair
-# for line in lines:
-#     # Split the line by the semicolon
-#     question, answer = line.strip().split(';')
-    
-#     # Print the question and answer
-#     print("Question:", question)
-#     print("Answer:", answer)
-#     print() # Add an empty line for better readability
-    
-#     # Break the loop after printing one question-answer pair
-#     break
-
-
-
-
 
 import random
 
-class QuestionAnswerPair:
+class QuestionAnswerPair():
+
     def __init__(self, file_path):
+        """
+        A class that manages a collection of question-answer pairs loaded from a file.
+
+        Attributes:
+            file_path (str): The file path where the question-answer pairs are stored.
+            question_answer_pairs (list): A list of tuples, where each tuple contains a question and its corresponding answer.
+        """
         self.file_path = file_path
         self.question_answer_pairs = []
         self.load_pairs()
 
+    # opens the file 'file_name.txt'
     def load_pairs(self):
+        """
+        Loads the question-answer pairs from the file and stores them in the `question_answer_pairs` list.
+
+        The file is expected to have one question-answer pair per line, separated by a semicolon (;).
+
+        """
         with open(self.file_path, 'r') as file:
             lines = file.readlines()
+
             for line in lines:
                 parts = line.strip().split(';')
+                
+                # separates the question and the answer
                 if len(parts) == 2:
                     question, answer = parts
                     self.question_answer_pairs.append((question, answer))
+
                 else:
                     print(f"{line.strip()}")
 
+    # generates random questions for the riddles
     def get_random_pair(self):
+        """
+        Returns a random question-answer pair from the `question_answer_pairs` list.
+
+        Returns:
+            tuple or None: A tuple containing a random question and its corresponding answer, or None if the list is empty.
+        """
         if not self.question_answer_pairs:
             return None
+
         random_pair = random.choice(self.question_answer_pairs)
+
         return random_pair
 
-# Example usage
-# qa_pair = QuestionAnswerPair('file_name.txt')
-# random_pair = qa_pair.get_random_pair()
-# if random_pair:
-#     question, answer = random_pair
-#     # print("Question:", question)
-#     # print("Answer:", answer)
-# else:
-#     print("No question-answer pairs found in the file.")
-
-
-# m = Map()
-# m.choose_question(file_name)
-
-# class Map:
-#     #m: Map = Map()
-#     def __init__(self):
-#         pass
-
-#     def choose_question(self, filename: str) -> list:
-#         with open(filename, 'r') as file:
-#             lines = file.readlines()#.strip()
-#             #random_line = random.choice(lines).strip() 
-#             random_line = random.choice(lines).strip() 
-#             random_line.split(';')
-#             random_str: list = choose_question("file_name.txt")
-#         return random_str
-#         #return random_line.split(";")
-
-# # m: Map = Map()
-# # random_str: list = m.choose_question("file_name.txt")
-# # print(random_str)
-
-# # file_name = 'file_name.txt'
-# # question, answer = m.choose_question(file_name)
-# # print("Question:", question)
-# # print("Answer:", answer)
-
-
 # introduction to the game 
-class Game:
+class Game():
     def intro(self):
-        print("\tWelcome to the Saw-themed RPG game!")
-        print("___________________________________________________________________________________")
+        print("\n\n\t\tWelcome to the Saw-themed RPG game!")
+        print("_______________________________________________________________________")
         print()
         print("You wake up in the kitchen room of a house you've never seen, unsure of how you got there.")
-        print("Everything is closed, not a single way outside")
+        print("Everything is closed, not a single way outside.")
         print("Your only clue is a note on the table in front of you.")
 
-#_______________________________________________
-# first selection of questions at the start of the game (in the kitchen)
-class Selections:
-    def kitchen_options(action):
+class Room():
+    def __init__(self, room_type):
+        """
+        Initializes the Room object with the specified room type.
+
+        Args:
+            room_type (str): The type of the room.
+        """
+        self.room_type = room_type
+
+class Selections(Room):
+
+    # prints an introduction message based on the current room type
+    def room_intro(self):
+        if self.room_type == "kitchen":
+            pass
+
+        elif self.room_type == "master":
+            print('_______________________________________________')
+            print("\nYou are in the Master Room")
+            print("There is another note.")
+            
+        elif self.room_type == "living":
+            print('_______________________________________________')
+            print("\nYou are in the Living Room")
+            print("There is another note.")
+
+    # prints the available options for the user to choose from
+    def print_options(self):
+        self.room_intro()
         print("\nWhat do you want to do?")
         print("1. Read the note")
         print("2. Try to open the door")
         print("Enter the number of the action:")
-        action = int(input().strip())
-        return action 
-    
-    def master_options(action):
-        print("You are now in the Master Room")
-        print("\nWhat do you want to do?")
-        print("1. Read the note")
-        print("2. Try to open the door")
-        print("Enter the number of the action:")
-        action = int(input().strip())
-        return action
-    
-    def living_room_options(action):
-        print("You are now in the Living Room")
-        print("\nWhat do you want to do?")
-        print("1. Read the note")
-        print("2. Try to open the door")
-        print("Enter the number of the action:")
-        action = int(input().strip())
-        return action
 
-#_______________________________________________
-# prints out the questions from the file and return the answer to the questions
-class Questions:
+    # prompts the user to enter an action and validates the input.
+    def get_user_action(self):
 
-    # qa_pair = QuestionAnswerPair('file_name.txt')
-    # random_pair = qa_pair.get_random_pair()
-    # if random_pair:
-    #     question, answer = random_pair
+        action = input().strip()
 
-    def kitchen_questions(self, random_pair):
-        print("\nThe note reads: You will have to play the Word Riddle Game before going to the next room.")
-        print("'To escape, you must solve a series of games in each room.'" )
+        # validates that the user input
+        while action not in ['1','2']:
+            print("Invalid option. Please enter a number: ")
+            action = input().strip()
+
+        # returns the user's selected action (1 or 2).
+        return int(action)
+
+class Questions():
+
+    # handles the game's starting plot in the kitchen room.
+    def kitchen_questions(self, random_pair, your_answer, answer):
+        print("\nThe note reads: \n\n\t\t\t'You will have to play the Word Riddle Game in each room.'")
+        print(f"\t\t\t'To escape, you must solve all the riddles in each room.'" )
+        print("\t\t\t'However you will only have 5 tries for each room.'")
+        print("'Each error will bring you closer to Jigsaw... so think carefully before answering, or else you could die.'")
         print("It's signed, 'Jigsaw'")
+
+        # retrieves a random question answer pair from the file
         qa_pair = QuestionAnswerPair('file_name.txt')
         random_pair = qa_pair.get_random_pair()
+
         if random_pair:
             question, answer = random_pair
-        #print(f"\nBelow the message is a riddle: {m.random_line.split(';')[0]}") # how to separate the question with the answer
+
+        # prints the riddle question 
         print(f"\nBelow the message is a riddle: {question}")
-        
         print("Enter your answer:")
         your_answer = input().lower().strip()
+
+        # returns the user's answer and correct answer
         return your_answer, answer
-        
-    def master_questions():
+
+    # handles the game's question in the master room.
+    def master_questions(self, random_pair, your_answer, answer):
+
+        # retrieves a random question answer pair from the file
+        qa_pair = QuestionAnswerPair('file_name.txt')
+        random_pair = qa_pair.get_random_pair()
+
+        if random_pair:
+            question, answer = random_pair
+
+        # prints the riddle question 
         print(f"\nBelow the message is a riddle: {question}")
         print("Enter your answer:")
-        answer = input().lower().strip()
-#_______________________________________________
+        your_answer = input().lower().strip()
 
-# contains the object the player will interact when they reach the last room
-# class Objects():
-    # def keys():
-    
-    # def lever():
-#_______________________________________________
+        # returns the user's answer and correct answer
+        return your_answer, answer
 
-# contains the answers to the question from the file
-class Answers:
-    fingers = 5
+    # contains the riddle question for when the user gets to the living room
+    def living_room_questions(self, random_pair, your_answer, answer):
 
-    def riddle_answer(fingers, your_answer, answer):
-        if your_answer == answer:
-            print("Correct! You hear a click as the door unlocks, you move on to the next room.")
-            return True
+        # retrieves a random question answer pair from the file
+        qa_pair = QuestionAnswerPair('file_name.txt')
+        random_pair = qa_pair.get_random_pair()
 
-        else:
-            print("Incorrect. You loose a finger.")
-            fingers -= 1
-            return False, fingers
+        if random_pair:
+            question, answer = random_pair
 
-    # def qa_answer():
+        # prints the riddle question 
+        print(f"\nBelow the message is a riddle: {question}")
+        print("Enter your answer:")
+        your_answer = input().lower().strip()
 
-#_______________________________________________
+        # returns the user's answer and correct answer
+        return your_answer, answer
+        
+class Answers():
 
-# main where everything is print out
+    # checks the user's answer to a riddle and manages the number of tries.
+    def riddle_answer(tries, your_answer, answer):
+
+        # checks if the user's answer is correct
+        while your_answer != answer:
+
+            # if the answer is incorrect, subtract the number of tries left
+            tries -= 1
+            print("\nIncorrect.")
+
+            # if the tries is 0, the user dies and the game ends.
+            if tries == 0:
+                print("You lost all your tries, Jigsaw comes out of the door with a knife.\nHe stabs you, you bled out.\nYou died from hemorrhage.\nJigsaw won.\n")
+                print("Do you want to play again?(Yes or No)")
+                play_again = input().lower().strip()
+
+                # validate the user's input for playing again
+                while play_again not in ['yes', 'no']:
+                    print('Please enter Yes or No')
+                    play_again = input().lower().strip()
+
+                # if the user wants to play again, call the main function
+                if play_again == 'yes':
+                    main()
+
+                # if the user doesn't want to play again, exit the program
+                elif play_again == 'no':
+                    exit()
+
+            # if the user has tries left, inform them of the remaining tries
+            else:
+                if tries == 1:
+                    print(f'You got {tries} try left out of 5.')
+
+                else:
+                    print(f'You got {tries} tries left out of 5.')
+
+                print('Try again:')
+                your_answer = input().lower().strip()
+        
+        # if the user's answer is correct, the following will print and will continue to the next room
+        print()
+        print("Correct! You hear a click as the door unlocks, you move on to the next room.")
+        print()
+
+        # return the updated number of tries
+        return tries
+
 def main():
-    random_line = random.randint(0, 7)
-    tries = 5
+
+    # initialize variables
+    random_line = random.randint(0, 15)
+    your_answer = ""
+    answer = ""
+
+    # creating instances of the classes
     question = Questions()
-    select = Selections()
     game = Game()
     ans = Answers
     qa_pair = QuestionAnswerPair('file_name.txt')
-    # m: Map = Map()
 
-# prints out the introduction to the game 
+    # prints the introduction to the game 
     game.intro()
-    # m.choose_question(filename)
-    fingers = 5
+
+    # initial game state
+    tries = 5
     room_locked = True
+
     while room_locked:
-        action = select.kitchen_options()
+
+        # user enters the kitchen room
+        kitchen_room_selections = Selections("kitchen")
+        kitchen_room_selections.print_options()
+        action = kitchen_room_selections.get_user_action()
 
         if action == 1:
             qa_pair.load_pairs()
             random_pair = qa_pair.get_random_pair()
-            question.kitchen_questions(random_pair)
-            ####
-            ans.riddle_answer(fingers, your_answer, answer)
+            your_answer, answer = question.kitchen_questions(random_pair, your_answer, answer)
+            ans.riddle_answer(tries, your_answer, answer)
+
+            while True:
+
+            # user enters the master room
+                master_room_selections = Selections("master") 
+                master_room_selections.print_options()
+                action = master_room_selections.get_user_action()
+
+                if action == 1:
+                    qa_pair.load_pairs()
+                    random_pair = qa_pair.get_random_pair()
+                    your_answer, answer = question.master_questions(random_pair, your_answer, answer)
+                    ans.riddle_answer(tries, your_answer, answer)
+                    
+                    while True:
+
+                        # user enters the living room
+                        living_room_selections = Selections("living")
+                        living_room_selections.print_options()
+                        action = living_room_selections.get_user_action()
+
+                        if action == 1:
+                            qa_pair.load_pairs()
+                            random_pair = qa_pair.get_random_pair()
+                            your_answer, answer = question.living_room_questions(random_pair, your_answer, answer)
+                            ans.riddle_answer(tries, your_answer, answer)
+
+                            # prints out the end/outcome of the game
+                            print("\nCongrats!")
+                            print("You made it out of the House!")
+                            print("You made Jigsaw mad, he will come for you again in the future")
+                            print()
+                            print("6 days since your kidnapping")
+                            print("Time passed since your kidnapping from Jigsaw, you are now back to your daily life")
+                            print("You see in the news that another person was also missing during the same timeline as you.")
+                            print("The police found the body of the missing person in an abandoned house.")
+                            print("It's the same house you escaped...")
+                            print()
+                            print("Do you want to play again?(Yes or No)")
+                            play_again = input().lower().strip()
+
+                            while play_again not in ['yes', 'no']:
+                                print('Please enter Yes or No')
+                                play_again = input().lower().strip()
+
+                            # if the user wants to play again, call the main function
+                            if play_again == 'yes':
+                                main()
+
+                            # if the user doesn't want to play again, exit the program
+                            elif play_again == 'no':
+                                exit()
+
+                        # the following will print and take the use back to the starting menu
+                        elif action == 2:
+                            print("\nThe door is locked, you won't be able to get out until you solve the riddle.")
+                            continue
+
+                elif action == 2:
+                    print("\nThe door is locked, you won't be able to get out until you solve the riddle.")
+                    continue
 
         elif action == 2:
-            # if "key" in globals():
-            #     open_door()
-            #     room_locked = False
-
-            # else:
-
             print("\nThe door is locked, you won't be able to get out until you solve the riddle.")
-            question.kitchen_questions(random_str)
-
-        else:
-            print("Invalid choice. Please enter a number.")
-            action = input()
+            continue
 
 if __name__ == "__main__":
     main()
