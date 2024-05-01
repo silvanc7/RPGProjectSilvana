@@ -10,6 +10,7 @@ question without using all the tries they will be free to go, however if the use
 user will have two outcomes, to come out alive or be trapped in the house forever.
 
 ## Instructions
+
 Open the 'py' in Visual Studio Code. Once there open the main.py. Open the Terminal, and on the terminal, write 'python main.py,' and press enter to start the game.
 
 The intro when you start the game:
